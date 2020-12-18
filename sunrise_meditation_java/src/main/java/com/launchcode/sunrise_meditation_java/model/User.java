@@ -1,4 +1,4 @@
-package com.launchcode.sunrise_meditation_java.registration.model;
+package com.launchcode.sunrise_meditation_java.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,21 +15,21 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "USER_ID")
 	private Long userId;
-	
+
 	@Column(name = "USER_NAME")
 	private String userName;
-	
+
 	@Column(name = "EMAIL_ID")
 	private String emailId;
-	
+
 	@Column(name = "PASSWORD")
 	private String password;
-	
+
 	@Column(name = "WEEKLY_GOAL")
 	private int weeklyGoal;
 
 	protected User() {
-		
+
 	}
 
 	public User(Long userId, String userName, String emailId, String password, int weeklyGoal) {
@@ -40,7 +40,7 @@ public class User {
 		this.password = password;
 		this.weeklyGoal = weeklyGoal;
 	}
-	
+
 	public Long getUserId() {
 		return userId;
 	}

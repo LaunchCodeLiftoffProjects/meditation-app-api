@@ -1,4 +1,4 @@
-package com.launchcode.sunrise_meditation_java.registration;
+package com.launchcode.sunrise_meditation_java;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
