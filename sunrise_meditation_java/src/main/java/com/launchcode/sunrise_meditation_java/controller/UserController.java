@@ -1,22 +1,90 @@
 package com.launchcode.sunrise_meditation_java.controller;
 
+import com.launchcode.sunrise_meditation_java.model.User;
+import com.launchcode.sunrise_meditation_java.repository.UserRepository;
+import com.launchcode.sunrise_meditation_java.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.launchcode.sunrise_meditation_java.model.User;
-import com.launchcode.sunrise_meditation_java.service.UserService;
 
 @RestController
 public class UserController {
 
 	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	public UserRepository repository;
+
+
+	@Autowired
 	private UserService userService;
+
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String login(@RequestParam(value = "username", defaultValue = "null") String username,
+						HttpServletRequest request,
+						HttpServletRequest response,
+						HttpSession session)
+	{
+		if((request.getAttribute("IsValidRequest")!= null) && request.getAttribute("IsValidRequest").equals("false")){
+			return "Invalid Request! Token Mismatch Error!";
+		}
+		String headerPassword = request.getHeader("password").trim();
+
+		if(session.isNew()){
+			session.setMaxInactiveInterval(100);
+			for (User user : repository.findAll()) {
+				if (user.getUserName().equals(username.trim())) {
+					if (bCryptPasswordEncoder.matches(headerPassword,user.getPassword())) {
+						System.out.println("Valid Credentials");
+						if (!user.isLoggedIn()) {
+							user.setLoggedIn(true);
+							repository.save(user);
+							session.setAttribute("token","randomtoken"+username);
+							return "User Logged In Successfully!";
+						} else {
+							return "User Already Logged In";
+						}
+					} else
+						return "Password Incorrect Error!!";
+				}
+			}
+			return "User Name Not Found";
+		}
+
+		return "User Already Logged In";
+	}
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public String logout(@RequestParam(value = "username",defaultValue = "null")String username, HttpSession session,
+						 HttpServletRequest request){
+		if(session.isNew()){
+			session.invalidate();
+			return "User Not Logged In!!";
+		}
+		else{
+			for(User user: repository.findAll()){
+				if(user.getUserName().equals(username)){
+					if(user.isLoggedIn()) {
+						user.setLoggedIn(false);
+						repository.save(user);
+					}
+					else{
+						return "User Not Logged In";
+					}
+
+				}
+			}
+			session.invalidate();
+			return "User Logged out Successfully";
+		}
+	}
+
 
 	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping(path = "/register")

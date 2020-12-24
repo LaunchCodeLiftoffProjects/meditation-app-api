@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "USER")
 public class User {
@@ -39,6 +40,7 @@ public class User {
 		this.emailId = emailId;
 		this.password = password;
 		this.weeklyGoal = weeklyGoal;
+		this.isLoggedIn = false;
 	}
 
 	public Long getUserId() {
@@ -48,6 +50,15 @@ public class User {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+
+	public boolean isLoggedIn() {
+		return isLoggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		isLoggedIn = loggedIn;
+	}
+	private boolean isLoggedIn;
 
 	public String getUserName() {
 		return userName;
