@@ -11,9 +11,6 @@ public class Meditation {
         @Column(name = "USER_ID")
         private Long userId;
 
-        @Column(name = "ACTION")
-        private String action;
-
         @Column(name = "CREATED_TIMESTAMP")
         private String created_timestamp;
 
@@ -21,14 +18,13 @@ public class Meditation {
         private String time_log;
 
         @Column(name = "END_TIMESTAMP")
-        private int end_timestamp;
+        private String end_timestamp;
 
     public Meditation() {
     }
 
-    public Meditation(Long userId, String action, String created_timestamp, String time_log, int end_timestamp) {
+    public Meditation(Long userId, String created_timestamp, String time_log, String end_timestamp) {
         this.userId = userId;
-        this.action = action;
         this.created_timestamp = created_timestamp;
         this.time_log = time_log;
         this.end_timestamp = end_timestamp;
@@ -40,14 +36,6 @@ public class Meditation {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
     }
 
     public String getCreated_timestamp() {
@@ -66,11 +54,19 @@ public class Meditation {
         this.time_log = time_log;
     }
 
-    public int getEnd_timestamp() {
+    public String getEnd_timestamp() {
         return end_timestamp;
     }
 
-    public void setEnd_timestamp(int end_timestamp) {
+    public void setEnd_timestamp(String end_timestamp) {
         this.end_timestamp = end_timestamp;
     }
+
+
+   /* @Override
+    public String toString() {
+        return "Created: " + String.valueOf(this.getCreated_timestamp()) + "\n"
+                + "End: " + String.valueOf(this.getEnd_timestamp()) + "\n"
+                + "Time Log: " + this.getTime_log() + "\n";
+    }*/
 }
