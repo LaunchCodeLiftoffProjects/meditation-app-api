@@ -28,7 +28,7 @@ public class User {
 	@Column(name = "WEEKLY_GOAL")
 	private int weeklyGoal;
 
-	protected User() {
+	public User() {
 
 	}
 
@@ -73,11 +73,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Integer getweeklyGoal() {
+	public Integer getWeeklyGoal() {
 		return weeklyGoal;
 	}
 
-	public void setweeklyGoal(Integer weeklyGoal) {
+	public void setWeeklyGoal(Integer weeklyGoal) {
 		this.weeklyGoal = weeklyGoal;
 	}
 }
