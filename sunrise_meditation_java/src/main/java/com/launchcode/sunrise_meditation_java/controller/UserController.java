@@ -1,6 +1,7 @@
 package com.launchcode.sunrise_meditation_java.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -46,12 +47,15 @@ public class UserController {
 					statusMessage = "Password and Confirm Password doesn't matches.";
 					return statusMessage;
 				}
-				for (User user : users) {
-					if (user != null && user.getEmailId().equals(newUser.getEmailId())) {
-						statusMessage = "There is already a user registsered with this email. Pls enter another valid email Id.";
-						return statusMessage;
-					} else { validUser = true; } 
-				}
+				
+				if(users != null && users.size() > 0) {
+					for (User user : users) {
+						if (user != null && user.getEmailId().equals(newUser.getEmailId())) {
+							statusMessage = "There is already a user registsered with this email. Pls enter another valid email Id.";
+							return statusMessage;
+						} else { validUser = true; } 
+					}
+				} else { validUser = true; }
 				
 			} else {
 				statusMessage = "Please enter Valid details.";
@@ -69,6 +73,7 @@ public class UserController {
 			saveUser.setEmailId(newUser.getEmailId());
 			saveUser.setPassword(newUser.getPassword());
 			saveUser.setWeeklyGoal(Integer.valueOf(newUser.getWeeklyGoal()));
+			saveUser.setCreatedTimestamp(new Date(System.currentTimeMillis()));
 			
 			userService.saveUser(saveUser);
 			statusMessage = "User is successfully registered! Please login with your credentials";
