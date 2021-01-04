@@ -6,11 +6,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.launchcode.sunrise_meditation_java.model.Meditation;
+import com.launchcode.sunrise_meditation_java.service.MeditationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.launchcode.sunrise_meditation_java.model.NewUser;
 import com.launchcode.sunrise_meditation_java.model.User;
@@ -82,5 +81,21 @@ public class UserController {
 
 		return statusMessage;
 	}
+
+
+	@Autowired
+	private MeditationService meditationService;
+
+	@CrossOrigin(origins = "http://localhost:3000")
+	@PostMapping(path = "/meditation")
+	public Meditation saveMeditation(@RequestBody Meditation meditation){
+		System.out.println("meditation java" + meditation);
+		return meditationService.saveMeditation(meditation);
+
+	}
+
+
+
+
 
 }
