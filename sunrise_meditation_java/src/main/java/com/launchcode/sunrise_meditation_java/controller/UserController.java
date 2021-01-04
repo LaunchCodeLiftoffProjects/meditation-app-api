@@ -4,19 +4,19 @@ import com.launchcode.sunrise_meditation_java.model.User;
 import com.launchcode.sunrise_meditation_java.repository.UserRepository;
 import com.launchcode.sunrise_meditation_java.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class UserController {
 
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+//	@Autowired
+	//private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
 	public UserRepository repository;
@@ -26,21 +26,29 @@ public class UserController {
 	private UserService userService;
 
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@RequestParam(value = "username", defaultValue = "null") String username,
 						HttpServletRequest request,
 						HttpServletRequest response,
 						HttpSession session)
-	{
+
+			{
+
+				System.out.println("$$$$$$$");
 		if((request.getAttribute("IsValidRequest")!= null) && request.getAttribute("IsValidRequest").equals("false")){
+			System.out.println("2222222222");
 			return "Invalid Request! Token Mismatch Error!";
 		}
 		String headerPassword = request.getHeader("password").trim();
 
 		if(session.isNew()){
+			System.out.println("333333");
 			session.setMaxInactiveInterval(100);
 			for (User user : repository.findAll()) {
+				System.out.println("111111"+ user.getUserName());
+				System.out.println("********"+ username);
 				if (user.getUserName().equals(username.trim())) {
+
 					if (bCryptPasswordEncoder.matches(headerPassword,user.getPassword())) {
 						System.out.println("Valid Credentials");
 						if (!user.isLoggedIn()) {
@@ -84,7 +92,7 @@ public class UserController {
 			return "User Logged out Successfully";
 		}
 	}
-
+*/
 
 	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping(path = "/register")
