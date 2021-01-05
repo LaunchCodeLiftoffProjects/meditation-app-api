@@ -24,7 +24,7 @@ import java.util.Objects;
 @CrossOrigin(origins={ "http://localhost:3000" })
 public class JwtAuthenticationRestController {
 
-    @Value("${jwt.http.request.header}")
+    @Value("Authorization")
     private String tokenHeader;
 
     @Autowired

@@ -1,11 +1,18 @@
 package com.launchcode.sunrise_meditation_java.model;
 
+import static javax.persistence.TemporalType.TIMESTAMP;
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 @Entity
@@ -29,18 +36,27 @@ public class User {
 	@Column(name = "WEEKLY_GOAL")
 	private int weeklyGoal;
 
-	protected User() {
+	@Column(name = "CREATED_TIMESTAMP")	
+    @Temporal(TIMESTAMP)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private Date createdTimestamp;
+	
+	public User() {
 
 	}
 
-	public User(Long userId, String userName, String emailId, String password, int weeklyGoal) {
+	public User(Long userId, String userName, String emailId, String password, int weeklyGoal, Date createdTimestamp) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.emailId = emailId;
 		this.password = password;
 		this.weeklyGoal = weeklyGoal;
+
 		this.isLoggedIn = false;
+
+		this.createdTimestamp = createdTimestamp;
+
 	}
 
 	public Long getUserId() {
@@ -84,11 +100,19 @@ public class User {
 		this.password = password;
 	}
 
-	public Integer getweeklyGoal() {
+	public Integer getWeeklyGoal() {
 		return weeklyGoal;
 	}
 
-	public void setweeklyGoal(Integer weeklyGoal) {
+	public void setWeeklyGoal(Integer weeklyGoal) {
 		this.weeklyGoal = weeklyGoal;
+	}
+
+	public Date getCreatedTimestamp() {
+		return createdTimestamp;
+	}
+
+	public void setCreatedTimestamp(Date createdTimestamp) {
+		this.createdTimestamp = createdTimestamp;
 	}
 }
