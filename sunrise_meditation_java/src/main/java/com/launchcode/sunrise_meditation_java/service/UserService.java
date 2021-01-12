@@ -28,5 +28,13 @@ public class UserService {
 		userRepository.findAll().forEach(user::add);
 		return user;
 	}
+	
+	public User getUserDetailsById(Long id) {
+		return userRepository.findById(id).get();
+	}
+	
+	public User getUserDetailsByEmail(String emailId) {
+		return userRepository.findByEmailId(emailId);
+	}
 
 }
