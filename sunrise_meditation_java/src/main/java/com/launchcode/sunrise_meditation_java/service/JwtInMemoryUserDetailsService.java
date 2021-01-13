@@ -1,13 +1,13 @@
 package com.launchcode.sunrise_meditation_java.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JwtInMemoryUserDetailsService implements UserDetailsService {
@@ -15,8 +15,8 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
     static List<JwtUserDetails> inMemoryUserList = new ArrayList<>();
 
     static {
-        inMemoryUserList.add(new JwtUserDetails(1L, "in28minutes",
-                "$2a$10$3zHzb.Npv1hfZbLEU5qsdOju/tk2je6W6PnNnY.c1ujWPcZh4PL6e", "ROLE_USER_2"));
+        inMemoryUserList.add(new JwtUserDetails( "vg.ganesh@gmail.com",
+                "1234"));
     }
 
     @Override

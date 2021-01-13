@@ -24,10 +24,10 @@ public class JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -3301605591108950415L;
     private Clock clock = DefaultClock.INSTANCE;
 
-    @Value("mySecret")
+    @Value("${jwt.signing.key.secret}")
     private String secret;
 
-    @Value("604800")
+    @Value("${jwt.token.expiration.in.seconds}")
     private Long expiration;
 
     public String getUsernameFromToken(String token) {

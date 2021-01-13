@@ -1,5 +1,6 @@
 package com.launchcode.sunrise_meditation_java.service;
 
+
 import com.launchcode.sunrise_meditation_java.model.JwtTokenAuthorizationOncePerRequestFilter;
 import com.launchcode.sunrise_meditation_java.model.JwtUnAuthorizedResponseAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,4 +94,3 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**/**");//Should not be in Production!
     }
 }
-

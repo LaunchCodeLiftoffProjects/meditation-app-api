@@ -41,6 +41,7 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
 
         String username = null;
         String jwtToken = null;
+        System.out.println("11111");
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
@@ -51,6 +52,8 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
                 logger.warn("JWT_TOKEN_EXPIRED", e);
             }
         } else {
+            System.out.println(username);
+            System.out.println(jwtToken);
             logger.warn("JWT_TOKEN_DOES_NOT_START_WITH_BEARER_STRING");
         }
 

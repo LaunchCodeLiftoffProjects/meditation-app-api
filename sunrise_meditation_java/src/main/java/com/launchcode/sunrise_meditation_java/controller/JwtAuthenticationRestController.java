@@ -24,7 +24,7 @@ import java.util.Objects;
 @CrossOrigin(origins={ "http://localhost:3000" })
 public class JwtAuthenticationRestController {
 
-    @Value("Authorization")
+    @Value("{jwt.http.request.header}")
     private String tokenHeader;
 
     @Autowired
@@ -39,6 +39,8 @@ public class JwtAuthenticationRestController {
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
             throws AuthenticationException {
+
+        System.out.println("333333333");
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -82,4 +84,5 @@ public class JwtAuthenticationRestController {
         }
     }
 }
+
 

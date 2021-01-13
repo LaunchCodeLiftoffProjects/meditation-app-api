@@ -1,18 +1,11 @@
 package com.launchcode.sunrise_meditation_java.model;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 
 @Entity
@@ -53,8 +46,6 @@ public class User {
 		this.password = password;
 		this.weeklyGoal = weeklyGoal;
 
-		this.isLoggedIn = false;
-
 		this.createdTimestamp = createdTimestamp;
 
 	}
@@ -66,15 +57,6 @@ public class User {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-
-	public boolean isLoggedIn() {
-		return isLoggedIn;
-	}
-
-	public void setLoggedIn(boolean loggedIn) {
-		isLoggedIn = loggedIn;
-	}
-	private boolean isLoggedIn;
 
 	public String getUserName() {
 		return userName;
