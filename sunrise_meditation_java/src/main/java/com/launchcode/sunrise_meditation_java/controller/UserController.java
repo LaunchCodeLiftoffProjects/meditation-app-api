@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.launchcode.sunrise_meditation_java.model.NewUser;
 import com.launchcode.sunrise_meditation_java.model.User;
+import com.launchcode.sunrise_meditation_java.model.UserDetails;
 import com.launchcode.sunrise_meditation_java.service.UserService;
 import com.launchcode.sunrise_meditation_java.util.CommonUtils;
 
@@ -33,7 +34,7 @@ public class UserController {
 	
 	@GetMapping("/loginSuccess/{loggedUser}")
 	public Long loginSuccess(@PathVariable("loggedUser") String loggedUser) {
-		System.out.println("******************* LOGIN SUCCESS ************************");
+		log.info("******************* LOGIN SUCCESS ************************");
 		return commonUtils.getUserIdByEmail(loggedUser);
 	}
 	
@@ -45,7 +46,7 @@ public class UserController {
 		boolean validUser = false;
 		String statusMessage = null;
 		User saveUser = new User();
-		System.out.println("*************** REGISTRATION PROCESS *******************");
+		log.info("*************** REGISTRATION PROCESS *******************");
 		/* Lookup user in database by e-mail - Starts */
 		if (newUser != null) {
 
@@ -98,6 +99,7 @@ public class UserController {
 
 	@PostMapping(path = "/meditation")
 	public Meditation saveMeditation(@RequestBody Meditation meditation){
+		log.info("*************** SAVE MEDITATION *******************");
 		System.out.println("meditation java" + meditation);
 		return meditationService.saveMeditation(meditation);
 
@@ -105,29 +107,35 @@ public class UserController {
 
 	@GetMapping(path = "/userProfile/{id}")
 	@ResponseBody
-	public User retrieveUserDetails(@PathVariable("id") Long id) {
+	public UserDetails retrieveUserDetails(@PathVariable("id") Long id) {
 
-		List<Meditation> meditationLogs = new ArrayList<>();
+		log.info("*************** RETRIEVE USER DETAILS *******************");
 		
-		User userDetails = userService.getUserDetailsById(id);
+		List<Meditation> meditationLogs = new ArrayList<>();
+		User user = userService.getUserDetailsById(id);
+		UserDetails userDetails = new UserDetails();
+		double totalGoalAchieved = 0.00d;
+		
 		meditationLogs = meditationService.getMeditationLogsById(id);
-
-		if (meditationLogs != null && meditationLogs.size() > 0) {
+		
+		if(user != null) {
+			userDetails.setUserId(user.getUserId());
+			userDetails.setEmailId(user.getEmailId());
+			userDetails.setUserName(user.getUserName());
+			userDetails.setWeeklyGoal(user.getWeeklyGoal());
+			userDetails.setMemberSince(user.getCreatedTimestamp());
 			
-			double weeklyLog = 0.00d;
-			ArrayList<Double> logArray = new ArrayList<Double>();
-			
-			for (Meditation meditation : meditationLogs) {
-				weeklyLog = weeklyLog + Double.valueOf(meditation.getTime_log().trim());
-				System.out.println("meditation sessions : " + meditation.getTime_log().trim());
-				logArray.add(Double.valueOf(meditation.getTime_log()));
+			if (meditationLogs != null && meditationLogs.size() > 0) {
+				
+				for (Meditation meditation : meditationLogs) {
+					totalGoalAchieved = totalGoalAchieved + Double.valueOf(meditation.getTime_log().trim());				
+				}
+				log.info("totalGoalAchieved : " + totalGoalAchieved);
 			}
-			System.out.println("weeklyLog : " + weeklyLog);
-			System.out.println("logArray : " + logArray);
+			userDetails.setTotalGoalAchieved(totalGoalAchieved);
+			log.info("userDetails : " + userDetails.toString());
 		}
 		
-		log.info("userDetails - {} ", userDetails);
-		log.info("meditationLogs - {} ", meditationLogs);
 		
 		return userDetails;
 	}
