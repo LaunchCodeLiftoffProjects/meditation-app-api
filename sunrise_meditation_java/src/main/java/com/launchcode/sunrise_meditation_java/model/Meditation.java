@@ -14,6 +14,9 @@ public class Meditation {
         @Column(name = "ID")
         private Long id;
 
+        @Column(name = "TIME_LOG")
+        private String time_log;
+
 
         @Column(name = "CREATED_TIMESTAMP")
         private String created_timestamp;
@@ -25,10 +28,11 @@ public class Meditation {
     public Meditation() {
     }
 
-    public Meditation(Long userId, Long id, String created_timestamp,  String end_timestamp) {
+    public Meditation(Long userId, Long id, String created_timestamp,  String time_log,String end_timestamp) {
         this.userId = userId;
         this.id = id;
         this.created_timestamp = created_timestamp;
+        this.time_log = time_log;
         this.end_timestamp = end_timestamp;
     }
 
@@ -44,6 +48,13 @@ public class Meditation {
         return id;
     }
 
+    public String getTime_log() {
+        return time_log;
+    }
+
+    public void setTime_log(String time_log) {
+        this.time_log = time_log;
+    }
 
     public String getCreated_timestamp() {
         return created_timestamp;
