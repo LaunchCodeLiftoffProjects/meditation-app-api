@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.launchcode.sunrise_meditation_java.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.launchcode.sunrise_meditation_java.model.Meditation;
 import com.launchcode.sunrise_meditation_java.service.MeditationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.launchcode.sunrise_meditation_java.model.NewUser;
@@ -20,7 +23,7 @@ import com.launchcode.sunrise_meditation_java.util.CommonUtils;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class UserController {
-	
+
 	Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
@@ -31,6 +34,10 @@ public class UserController {
 	
 	@Autowired
 	private CommonUtils commonUtils;
+
+
+	@Autowired
+	private UserRepository userRepository;
 	
 	@GetMapping("/loginSuccess/{loggedUser}")
 	public Long loginSuccess(@PathVariable("loggedUser") String loggedUser) {
@@ -140,4 +147,30 @@ public class UserController {
 		return userDetails;
 	}
 
+	public void resetPasswordToken(String token, String email) {
+		User user = userRepository.findByEmailId(email);
+		if (user != null){
+			user.setResetPasswordToken(token);
+			userRepository.save(user);
+		} else{
+			throw new UsernameNotFoundException( "Email: " + email + System.lineSeparator()
+					+ "There is no user with that email :(" );
+		}
+	}
+
+	public User get(String resetPasswordToken){
+		return userRepository.findByResetPasswordToken(resetPasswordToken);
+	}
+	public void updatePassword(User user, String newPassword){
+		/*If our project uses encryption
+
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(newPassword);
+		user.setPassword(encodedPassword);
+		user.setResetPasswordToken(null); */
+		user.setPassword(newPassword);
+		user.setResetPasswordToken(null);
+
+		userRepository.save(user);
+	}
 }

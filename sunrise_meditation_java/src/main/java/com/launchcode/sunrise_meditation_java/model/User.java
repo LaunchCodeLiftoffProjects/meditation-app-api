@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
 @Table(name = "USER")
@@ -39,12 +40,15 @@ public class User {
     @Temporal(TIMESTAMP)
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createdTimestamp;
+
+	@Column(name = "RESET_PASSWORD_TOKEN")
+	private String resetPasswordToken;
 	
 	public User() {
 
 	}
 
-	public User(Long userId, String userName, String emailId, String password, int weeklyGoal, Date createdTimestamp) {
+	public User(Long userId, String userName, String emailId, String password, int weeklyGoal, Date createdTimestamp, String resetPasswordToken) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -52,6 +56,7 @@ public class User {
 		this.password = password;
 		this.weeklyGoal = weeklyGoal;
 		this.createdTimestamp = createdTimestamp;
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 	public Long getUserId() {
@@ -100,5 +105,13 @@ public class User {
 
 	public void setCreatedTimestamp(Date createdTimestamp) {
 		this.createdTimestamp = createdTimestamp;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 }
