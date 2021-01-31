@@ -68,7 +68,7 @@ public class UserController {
 				if (users != null && users.size() > 0) {
 					for (User user : users) {
 						if (user != null && user.getEmailId().equals(newUser.getEmailId())) {
-							statusMessage = "There is already a user registsered with this email. Pls enter another valid email Id.";
+							statusMessage = "There is already a user registered with this email. Pls enter another valid email Id.";
 							return statusMessage;
 						} else {
 							validUser = true;
@@ -147,30 +147,6 @@ public class UserController {
 		return userDetails;
 	}
 
-	public void resetPasswordToken(String token, String email) {
-		User user = userRepository.findByEmailId(email);
-		if (user != null){
-			user.setResetPasswordToken(token);
-			userRepository.save(user);
-		} else{
-			throw new UsernameNotFoundException( "Email: " + email + System.lineSeparator()
-					+ "There is no user with that email :(" );
-		}
-	}
+	//Code that used to be here was moved to UserService
 
-	public User get(String resetPasswordToken){
-		return userRepository.findByResetPasswordToken(resetPasswordToken);
-	}
-	public void updatePassword(User user, String newPassword){
-		/*If our project uses encryption
-
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String encodedPassword = passwordEncoder.encode(newPassword);
-		user.setPassword(encodedPassword);
-		user.setResetPasswordToken(null); */
-		user.setPassword(newPassword);
-		user.setResetPasswordToken(null);
-
-		userRepository.save(user);
-	}
 }

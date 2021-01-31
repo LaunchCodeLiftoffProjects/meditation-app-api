@@ -2,6 +2,7 @@ package com.launchcode.sunrise_meditation_java.controller;
 
 import com.launchcode.sunrise_meditation_java.util.PasswordLink;
 import net.bytebuddy.utility.RandomString;
+import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -60,7 +61,8 @@ public class ForgotPasswordController {
         System.out.println("Token: " + token);
 
         try {
-        userController.resetPasswordToken(token, email);
+        //sets User's RESET_PASSWORD_TOKEN to the token variable created on line 59
+        userService.resetPasswordToken(token, email);
 
         String resetPasswordLink = PasswordLink.getSiteAddress(request) + "/reset_password?token=" + token;
 
@@ -95,4 +97,18 @@ public class ForgotPasswordController {
         mailSender.send(message);
 
     }
+
+    @GetMapping("/resetPassword")
+    public String showPasswordResetScreen(@Param(value = "token") String token, Model model ){
+        User user = userService.get(token);
+        if(user == null) {
+            return "/resetPassword";
+        }
+
+
+        return "/login"; //probably wrong
+    }
+
+
+    /** Still need to call updatePassword via the user's input on resetPassword.jsx */
 }
