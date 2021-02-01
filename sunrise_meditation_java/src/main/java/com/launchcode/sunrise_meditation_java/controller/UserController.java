@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.launchcode.sunrise_meditation_java.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.launchcode.sunrise_meditation_java.model.Meditation;
@@ -31,7 +32,9 @@ public class UserController {
 	
 	@Autowired
 	private CommonUtils commonUtils;
-	
+	private Long id;
+	private User weeklyGoal;
+
 	@GetMapping("/loginSuccess/{loggedUser}")
 	public Long loginSuccess(@PathVariable("loggedUser") String loggedUser) {
 		log.info("******************* LOGIN SUCCESS ************************");
@@ -115,8 +118,8 @@ public class UserController {
 		User user = userService.getUserDetailsById(id);
 		UserDetails userDetails = new UserDetails();
 		double totalGoalAchieved = 0.00d;
-		
-		meditationLogs = meditationService.getMeditationLogsById(id);
+		meditationLogs
+		 = meditationService.getMeditationLogsById(id);
 		
 		if(user != null) {
 			userDetails.setUserId(user.getUserId());
@@ -139,5 +142,24 @@ public class UserController {
 		
 		return userDetails;
 	}
+
+	@PutMapping("/updateProfile/{id}")
+	public String updateWeeklyGoal(@PathVariable("id") Long id,@RequestBody User updateUser)
+	{
+		log.info("*************** UPDATE USER DETAILS *******************");
+		User user = userService.getUserDetailsById(id);
+		String statusMessage = null;
+		if(updateUser.getWeeklyGoal() != null) {
+			user.setWeeklyGoal(Integer.valueOf(updateUser.getWeeklyGoal()));
+			userService.saveUser(user);
+			System.out.println(user.getWeeklyGoal());
+			statusMessage = "Update Success";
+		} else {
+			statusMessage = "Please enter valid value";
+		}
+
+		return statusMessage;
+	}
+
 
 }
